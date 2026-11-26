@@ -1,4 +1,3 @@
-
 <?php
 
 require_once __DIR__ . '/../Models/User.php';
@@ -74,9 +73,7 @@ class AuthController
 
         require __DIR__ . '/../Views/layouts/main.php';
     }
-
-    public function login()
-    {
+    public function login(){
         $pageTitle = 'Sign In';
         $isLoggedIn = isset($_SESSION['user_id']);
         $errors = [];
@@ -94,16 +91,16 @@ class AuthController
 
             $user = $this->userModel->findByEmail($email);
 
-            if ($user && password_verify($password, $user['password'])) {
+          if ($user && password_verify($password, $user['password'])) {
 
-                session_regenerate_id(true);
+    session_regenerate_id(true);
 
-                $_SESSION['user_id'] = $user['id'];
-                $_SESSION['user_name'] = $user['first_name'];
-                $_SESSION['user_role'] = $user['role'];
+    $_SESSION['user_id'] = $user['id'];
+    $_SESSION['user_name'] = $user['first_name'];
+    $_SESSION['user_role'] = $user['role'];
 
-                header('Location: /');
-                exit;
+    header('Location: /?page=home', true, 303);
+    exit;
 
             } else {
                 $errors[] = 'Invalid email address or password.';
@@ -111,12 +108,13 @@ class AuthController
         }
 
         ob_start();
+
         require __DIR__ . '/../Views/pages/login.php';
+
         $content = ob_get_clean();
 
         require __DIR__ . '/../Views/layouts/main.php';
     }
-
     public function logout()
     {
         $_SESSION = [];
@@ -137,7 +135,7 @@ class AuthController
 
         session_destroy();
 
-        header('Location: /');
+        header('Location: http://localhost:8080/?page=home', true, 303);
         exit;
     }
 }
