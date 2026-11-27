@@ -77,4 +77,51 @@ class Vehicle
 
         return $stmt->execute(['id' => $id]);
     }
+
+    // Get available vehicles for customers with optional filters
+    public function getAvailableVehicles($type = '', $search = '')
+    {
+        $sql = "SELECT * FROM vehicles WHERE status = 'available'";
+        $params = [];
+
+        if (!empty($type) && in_array($type, ['car', 'bus'])) {
+            $sql .= " AND vehicle_type = :type";
+            $params['type'] = $type;
+        }
+
+        if (!empty($search)) {
+            $sql .= " AND (
+                name LIKE :search_name
+                OR brand LIKE :search_brand
+                OR model LIKE :search_model
+            )";
+
+            $searchTerm = '%' . $search . '%';
+
+            $params['search_name'] = $searchTerm;
+            $params['search_brand'] = $searchTerm;
+            $params['search_model'] = $searchTerm;
+        }
+        $sql .= " ORDER BY created_at DESC";
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute($params);
+
+        return $stmt->fetchAll();
+    }
+
+
+    // Get one available vehicle by ID
+    public function getAvailableVehicleById($id)
+    {
+        $sql = "SELECT * FROM vehicles
+                WHERE id = :id
+                AND status = 'available'
+                LIMIT 1";
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute(['id' => $id]);
+
+        return $stmt->fetch();
+    }
 }

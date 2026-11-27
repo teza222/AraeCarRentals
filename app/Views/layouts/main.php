@@ -51,6 +51,10 @@
                 </li>
 
                 <li class="nav-item">
+                    <a class="nav-link" href="/?page=browse-vehicles">Browse Vehicles</a>
+                </li>
+
+                <li class="nav-item">
                     <a class="nav-link" href="/?page=about">About</a>
                 </li>
 

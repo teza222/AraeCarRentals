@@ -12,6 +12,8 @@ if (session_status() === PHP_SESSION_NONE) {
 require_once __DIR__ . '/../app/Controllers/HomeController.php';
 require_once __DIR__ . '/../app/Controllers/AuthController.php';
 require_once __DIR__ . '/../app/Controllers/VehicleController.php';
+require_once __DIR__ . '/../app/Controllers/PublicVehicleController.php';
+require_once __DIR__ . '/../app/Controllers/BookingController.php';
 
 $page = $_GET['page'] ?? 'home';
 
@@ -44,6 +46,21 @@ switch ($page) {
     case 'vehicle-delete':
         $controller = new VehicleController();
         $controller->delete();
+        break;
+
+    case 'browse-vehicles':
+        $controller = new PublicVehicleController();
+        $controller->index();
+        break;
+
+    case 'vehicle-details':
+        $controller = new PublicVehicleController();
+        $controller->details();
+        break;
+
+    case 'booking-create':
+        $controller = new BookingController();
+        $controller->create();
         break;
 
     case 'home':
